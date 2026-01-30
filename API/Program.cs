@@ -7,12 +7,39 @@ using Infrastucture.Services.CacheService;
 using Infrastucture.Services.EmailService;
 using Infrastucture.Services.TheMovieDatabase;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi("v2");
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        var scheme = new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Scheme = "Bearer",
+            BearerFormat = "JWT"
+        };
+        
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes.Add("Bearer", scheme);
+        
+        foreach (var operation in document.Paths.Values.SelectMany(p => p.Operations))
+        {
+            operation.Value.Security.Add(new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecurityScheme { Reference = new OpenApiReference { Id = "Bearer", Type = ReferenceType.SecurityScheme } }] = Array.Empty<string>()
+            });
+        }
+        return Task.CompletedTask;
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(opt =>

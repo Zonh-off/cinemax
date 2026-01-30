@@ -1,26 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Security.Authentication;
-using System.Security.Claims;
+﻿using API.DTOs;
+using API.Extentions;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastucture.Services.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class RegisterRequest
-{
-    [Required]
-    public string Email { get; set; }
-    
-    [Required]
-    public string Password { get; set; }
-}
-
-public class PreRegistrationInfo
+public class PreRegistrationCache
 {
     public string Password { get; set; }
     public string Code { get; set; }
@@ -44,7 +33,7 @@ public class AccountController(SignInManager<AppUser> signInManager,
         var verificationCode = new Random().Next(100000, 999999).ToString();
         var duration = new TimeSpan(0, 5, 0);
         
-        await cacheService.SetCacheAsync<PreRegistrationInfo>(
+        await cacheService.SetCacheAsync<PreRegistrationCache>(
             cacheKey, 
             new() { Password = hashedByApp, Code = verificationCode }, 
             duration);
@@ -66,7 +55,7 @@ public class AccountController(SignInManager<AppUser> signInManager,
         if (!await cacheService.IsExistAsync(cacheKey))
             return BadRequest("Something went wrong with code verification");
         
-        var cachedData = await cacheService.GetCacheAsync<PreRegistrationInfo>(cacheKey);
+        var cachedData = await cacheService.GetCacheAsync<PreRegistrationCache>(cacheKey);
         
         if (cachedData.Code != code)
             return BadRequest("Code is wrong");
@@ -112,27 +101,5 @@ public class AccountController(SignInManager<AppUser> signInManager,
             user.FullName,
             user.Email
         });
-    }
-}
-
-public static class ClaimsExtensions
-{
-    public static async Task<AppUser> GetUserByEmail(this UserManager<AppUser> userManager,
-                                                     ClaimsPrincipal user)
-    {
-        var userToReturn = await userManager.Users
-           .FirstOrDefaultAsync(x => x.Email == user.GetEmail());
-        
-        if (userToReturn == null) throw new AuthenticationException("User not found");
-        
-        return userToReturn;
-    }
-    
-    public static string GetEmail(this ClaimsPrincipal user)
-    {
-        var email = user.FindFirstValue(ClaimTypes.Email) 
-            ?? throw new AuthenticationException("Email claim doesn't exist");
-        
-        return email;
     }
 }
