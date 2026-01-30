@@ -1,0 +1,64 @@
+
+<ion-content>
+  <div class="flex flex-row justify-between p-4">
+    <div class="flex flex-row items-center gap-2">
+      <img src="https://placehold.co/64x64" alt="avatar" class="rounded-[99px]">
+      <div class="flex flex-col">
+        <span>Your location</span>
+        <span>Lviv</span>
+      </div>
+    </div>
+
+    <ion-button fill="clear" routerLink="/tabs/movies">
+      <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </div>
+  <div class="p-4 space-y-4">
+
+    <section>
+      <div class="flex flex-row items-center justify-between">
+        <h2 class="text-2xl font-bold">Now Playing</h2>
+        <ion-button fill="clear" routerDirection="forward" [routerLink]="['movies']">
+          <div class="flex flex-row items-center gap-1">
+            View All
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </ion-button>
+      </div>
+
+      <div class="flex flex-row overflow-x-auto gap-4 pb-4 no-scrollbar scroll-smooth snap-x snap-mandatory">
+        @for (movie of movies()?.data; track movie.id) {
+          <div class="min-w-[160px] w-[45%] snap-start">
+            <app-movie-item
+              [movie]="movie"
+              [routerLink]="['movie-details', movie.id]">
+            </app-movie-item>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="flex flex-row items-center justify-between">
+        <h2 class="text-2xl font-bold">Coming Soon</h2>
+        <ion-button fill="clear" routerLink="/tabs/movies">
+          <div class="flex flex-row items-center gap-1">
+            View All
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </ion-button>
+      </div>
+
+      <div class="flex flex-row overflow-x-auto gap-4 pb-4 no-scrollbar scroll-smooth snap-x snap-mandatory">
+        @for (movie of movies()?.data; track movie.id) {
+          <div class="min-w-[160px] w-[45%] snap-start">
+            <app-movie-item
+              [movie]="movie"
+              (click)="handleBooking(movie.id)">
+            </app-movie-item>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</ion-content>

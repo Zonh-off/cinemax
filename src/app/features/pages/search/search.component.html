@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="text-center">Explore</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="flex items-center px-4 gap-2">
+      <ion-searchbar
+        class="ion-no-padding"
+        placeholder="Search movies..."
+        (ionInput)="onSearchChange($event)">
+      </ion-searchbar>
+
+      <ion-button fill="clear" (click)="openFilters()">
+        <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+        @if (selectedGenres().length > 0) {
+          <ion-badge color="primary">{{ selectedGenres().length }}</ion-badge>
+        }
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (movies().length === 0 && !isLoading()) {
+    <div class="flex flex-col items-center justify-center h-full text-gray-400 p-10 text-center">
+      <ion-icon name="search-outline" style="font-size: 5rem;" class="mb-4 opacity-20"></ion-icon>
+      <h2 class="text-xl font-bold text-white">Find your favorite movies</h2>
+      <p>Search by title or filter by genre to get started</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-2 gap-4 p-4">
+      @for (movie of movies(); track movie.id) {
+        <app-movie-item [movie]="movie" [routerLink]="['../movie-details', movie.id]">
+          <ion-button action-btn shape="round" class="w-full">Details</ion-button>
+        </app-movie-item>
+      } @empty {
+        <div class="col-span-2 text-center mt-20 text-gray-400">
+          <p>No results found for your criteria.</p>
+        </div>
+      }
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" [disabled]="!hasMorePages">
+      <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  }
+</ion-content>

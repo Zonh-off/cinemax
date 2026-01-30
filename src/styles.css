@@ -1,3 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+
+:root {
+  --ion-color-primary: #fe3420 !important;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
