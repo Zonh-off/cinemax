@@ -18,7 +18,7 @@
     <section>
       <div class="flex flex-row items-center justify-between">
         <h2 class="text-2xl font-bold">Now Playing</h2>
-        <ion-button fill="clear" routerDirection="forward" [routerLink]="['movies']">
+        <ion-button fill="clear" routerDirection="forward" [routerLink]="['/tabs/explore']" [queryParams]="{ sort: 'popularity' }">
           <div class="flex flex-row items-center gap-1">
             View All
             <ion-icon name="chevron-forward-outline"></ion-icon>
@@ -31,7 +31,7 @@
           <div class="min-w-[160px] w-[45%] snap-start">
             <app-movie-item
               [movie]="movie"
-              [routerLink]="['movie-details', movie.id]">
+              [routerLink]="['/tabs/explore/movie-details', movie.id]">
             </app-movie-item>
           </div>
         }

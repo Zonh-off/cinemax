@@ -1,13 +1,15 @@
 import {Component, input, Input} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {Movie} from '../../models/types';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-movie-item',
   templateUrl: './movie-item.component.html',
   styleUrls: ['./movie-item.component.css'],
   imports: [
-    IonicModule
+    IonicModule,
+    RouterLink
   ],
   standalone: true
 })

@@ -1,4 +1,4 @@
-<div class="relative group transition-transform duration-300 active:scale-95">
+<div class="relative group transition-transform duration-300 active:scale-95" [routerLink]="['/tabs/explore/movie-details', movie().id]">
   <div class="aspect-[2/3] overflow-hidden rounded-lg ">
     <img
       [src]="movie().posterPath"

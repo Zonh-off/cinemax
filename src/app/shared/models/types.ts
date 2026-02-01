@@ -58,3 +58,8 @@ export type Genre = {
   id: number;
   name: string;
 }
+
+export type User = {
+  fullName: string;
+  email: string;
+}

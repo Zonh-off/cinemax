@@ -4,13 +4,13 @@ import {catchError, debounceTime, EMPTY, of, Subject, switchMap, tap} from 'rxjs
 import {Movie, MoviesParams} from '../../../shared/models/types';
 import {InfiniteScrollCustomEvent, IonicModule, ModalController} from '@ionic/angular';
 import {MovieItemComponent} from '../../../shared/components/movie-item/movie-item.component';
-import {RouterLink} from '@angular/router';
-import {GenreFilterComponent} from '../home/movies/genre-filter/genre-filter.component';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import {GenreFilterComponent} from './genre-filter/genre-filter.component';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
+  selector: 'app-explore',
+  templateUrl: './explore.component.html',
+  styleUrls: ['./explore.component.css'],
   imports: [
     IonicModule,
     MovieItemComponent,
@@ -18,10 +18,11 @@ import {GenreFilterComponent} from '../home/movies/genre-filter/genre-filter.com
   ],
   standalone: true
 })
-export class SearchComponent  implements OnInit {
+export class ExploreComponent implements OnInit {
   private movieService = inject(MovieService);
   private filterTrigger$ = new Subject<void>();
   private modalCtrl = inject(ModalController);
+  private activatedRouter = inject(ActivatedRoute);
   private isModalLoading = false;
   private moviesParams = new MoviesParams();
 
@@ -38,12 +39,13 @@ export class SearchComponent  implements OnInit {
       switchMap(() => {
         const hasSearch = this.moviesParams.search && this.moviesParams.search.trim().length > 0;
         const hasGenres = this.selectedGenres().length > 0;
+        const hasSort = this.moviesParams.sort.length > 0;
 
-        if (!hasSearch && !hasGenres) {
+        if (!hasSearch && !hasGenres && !hasSort) {
           this.isLoading.set(false);
           this.movies.set([]);
           this.hasMorePages = false;
-          return of({ data: [], totalItems: 0, pageNumber: 1, pageSize: 10 }); // Повертаємо пустий результат
+          return of({ data: [], totalItems: 0, pageNumber: 1, pageSize: 10 });
         }
 
         this.isLoading.set(true);
@@ -51,6 +53,18 @@ export class SearchComponent  implements OnInit {
         return this.getMovies();
       })
     ).subscribe();
+
+
+    this.activatedRouter.queryParamMap.subscribe(params => {
+      this.moviesParams.sort = params.get('sort') ?? 'popularity';
+      this.moviesParams.search = params.get('search') ?? '';
+      this.moviesParams.pageNumber = 1;
+
+      const genres = params.get('genres');
+      this.selectedGenres.set(genres ? genres.split(',') : []);
+
+      this.filterTrigger$.next();
+    });
   }
 
   loadMore($event: InfiniteScrollCustomEvent) {

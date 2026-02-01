@@ -1,0 +1,22 @@
+<ion-content class="ion-padding ion-text-center">
+  <div class="welcome-container flex flex-col justify-center h-full">
+    <ion-text color="primary">
+      <h1 class="text-4xl font-bold">Cinemax</h1>
+    </ion-text>
+    <p class="ion-margin-bottom mt-6">Explore your favorite movies in one place.</p>
+
+    <div class="flex flex-col gap-8 mt-10">
+      <ion-button
+        color="primary"
+        fill="solid"
+        shape="round"
+        routerLink="/auth/login">
+        <ion-label class="py-6">Sign in with password</ion-label>
+      </ion-button>
+      <div class="flex gap-2 justify-center">
+        <span>Don't have an account?</span>
+        <a routerLink="/auth/register" class="font-semibold">Sign up</a>
+      </div>
+    </div>
+  </div>
+</ion-content>

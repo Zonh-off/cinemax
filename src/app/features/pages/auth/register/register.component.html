@@ -1,0 +1,99 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (step() === 1) {
+    <div class="flex flex-col items-start">
+      <ion-text>
+        <h1>Create account</h1>
+      </ion-text>
+      <ion-text>
+        <p class="text-gray-500">Sign up yo unlock a world of movies and seamless ticket booking.</p>
+      </ion-text>
+    </div>
+
+    <div class="mt-6">
+      <form [formGroup]="registerForm" class="flex flex-col gap-4">
+
+        <app-input
+          label="Email"
+          type="email"
+          formControlName="email"></app-input>
+
+        <app-input
+          label="Password"
+          type="password"
+          formControlName="password"></app-input>
+
+        <app-input
+          label="Repeat Password"
+          type="password"
+          formControlName="repeatPassword"></app-input>
+
+        @if (!passwordsMatch) {
+          <div class="text-red-500 text-sm">
+            Passwords do not match
+          </div>
+        }
+
+      </form>
+    </div>
+  } @else if (step() === 2) {
+    <div class="flex flex-col items-start">
+      <ion-text>
+        <h1>OTP code verification</h1>
+      </ion-text>
+      <ion-text>
+        <p class="text-gray-500">
+          We sent a 6-digit code to your email. Please enter it below to verify your account.
+        </p>
+      </ion-text>
+    </div>
+
+    <div class="flex flex-col gap-4 mt-6">
+      <form [formGroup]="verificationForm">
+        <app-input
+          placeholder="Verification Code"
+          type="text"
+          formControlName="code"></app-input>
+
+        @if (codeError()) {
+          <p class="text-red-500 mb-4 text-sm">
+            {{ codeError() }}
+          </p>
+        }
+      </form>
+    </div>
+  }
+</ion-content>
+
+@if (step() == 1) {
+  <ion-footer [translucent]="true" class="ion-no-border ion-padding border-t border-gray-200">
+    <ion-button
+      class="w-full mt-6"
+      color="primary"
+      fill="solid"
+      shape="round"
+      [disabled]="!registerForm.valid || !passwordsMatch"
+      (click)="onNextStep()">
+      <ion-label class="py-6">Next</ion-label>
+    </ion-button>
+  </ion-footer>
+} @else if (step() === 2) {
+  <ion-footer [translucent]="true" class="ion-no-border ion-padding border-t border-gray-200">
+    <ion-button
+      class="w-full"
+      color="primary"
+      fill="solid"
+      shape="round"
+      [disabled]="!verificationForm.valid"
+      (click)="onVerify()">
+      <ion-label class="py-6">Sign up</ion-label>
+    </ion-button>
+  </ion-footer>
+}

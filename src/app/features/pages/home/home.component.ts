@@ -3,7 +3,7 @@ import {IonicModule} from '@ionic/angular';
 import {MovieItemComponent} from '../../../shared/components/movie-item/movie-item.component';
 import * as allIcons from 'ionicons/icons';
 import { addIcons } from 'ionicons';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Movie, MoviesParams, Pagination} from '../../../shared/models/types';
 import {MovieService} from '../../../core/services/movie.service';
 
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   movieService = inject(MovieService);
   movies = signal<Pagination<Movie> | null>(null);
   moviesParams = new MoviesParams();
+  router = inject(Router);
 
   constructor() {
     addIcons(allIcons);
@@ -42,5 +43,8 @@ export class HomeComponent implements OnInit {
 
   handleBooking(movieId: number) {
     console.log('Бронюємо фільм з ID:', movieId);
+  }
+
+  goToMovies() {
   }
 }

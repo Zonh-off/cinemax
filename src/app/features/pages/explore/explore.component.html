@@ -30,8 +30,9 @@
   } @else {
     <div class="grid grid-cols-2 gap-4 p-4">
       @for (movie of movies(); track movie.id) {
-        <app-movie-item [movie]="movie" [routerLink]="['../movie-details', movie.id]">
-          <ion-button action-btn shape="round" class="w-full">Details</ion-button>
+        <app-movie-item
+          [movie]="movie"
+          [routerLink]="['/movie-details', movie.id]">
         </app-movie-item>
       } @empty {
         <div class="col-span-2 text-center mt-20 text-gray-400">
