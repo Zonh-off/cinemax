@@ -46,6 +46,8 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddCors();
+builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
 {
     var connString = builder.Configuration.GetConnectionString("Redis");
@@ -94,7 +96,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapGroup("api").MapIdentityApi<AppUser>();
+app.MapGroup("api/account").MapIdentityApi<AppUser>();
 app.MapControllers();
 
 try
