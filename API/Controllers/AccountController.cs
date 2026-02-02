@@ -84,7 +84,7 @@ public class AccountController(SignInManager<AppUser> signInManager,
         
         var emailBody = EmailTemplates.GetWelcomeTemplate();
         await emailService.SendEmailAsync(email, "Successfully registered to Cinemax!", emailBody);
-
+        
         return Ok();
     }
     
@@ -100,6 +100,24 @@ public class AccountController(SignInManager<AppUser> signInManager,
         {
             user.FullName,
             user.Email
+        });
+    }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout()
+    {
+        await signInManager.SignOutAsync();
+        
+        return Ok();
+    }
+    
+    [HttpGet("auth-status")]
+    public ActionResult GetAuthState()
+    {
+        return Ok(new
+        {
+            IsAuthenticated = User.Identity?.IsAuthenticated ?? false
         });
     }
 }
