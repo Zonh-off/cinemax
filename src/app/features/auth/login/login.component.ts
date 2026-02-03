@@ -2,8 +2,8 @@ import {Component, inject} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AppInputComponent} from '../../../../shared/components/text-input/text-input.component';
-import {AccountService} from '../../../../core/services/account.service';
+import {AppInputComponent} from '../../../shared/components/text-input/text-input.component';
+import {AccountService} from '../../../core/services/account.service';
 import {switchMap} from 'rxjs';
 
 @Component({

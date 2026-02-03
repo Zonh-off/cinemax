@@ -51,7 +51,10 @@
     <div class="mt-8">
       <h2 class="text-xl font-bold mb-4">Trailer</h2>
       <div class="relative aspect-video rounded-3xl overflow-hidden shadow-lg group">
-        <img [src]="'https://img.youtube.com/vi/' + movie()?.trailerUrl + '/maxresdefault.jpg'" class="w-full h-full object-cover">
+        <img
+          [src]="'https://img.youtube.com/vi/' + movie()?.trailerUrl + '/maxresdefault.jpg'"
+          [alt]="movie()?.title"
+          class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-active:bg-black/50 transition-all">
           <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl">
             <ion-icon name="play" class="text-black text-3xl ml-1"></ion-icon>
@@ -75,7 +78,10 @@
       <div class="flex overflow-x-auto gap-4 no-scrollbar snap-x">
         @for (actor of movie()?.actors; track $index) {
           <div class="flex-shrink-0 w-20 text-center snap-start">
-            <img [src]="actor.profilePath" class="w-20 h-20 object-cover rounded-full border-2 border-slate-100 mb-2">
+            <img
+              [src]="actor.profilePath"
+              [alt]="actor.name"
+              class="w-20 h-20 object-cover rounded-full border-2 border-slate-100 mb-2">
             <p class="text-[0.8rem] font-bold">{{ actor.name }}</p>
             <p class="text-[0.8rem] text-gray-400">{{ actor.character }}</p>
           </div>
@@ -88,7 +94,10 @@
       <div class="flex overflow-x-auto gap-2 no-scrollbar snap-x">
         @for (photo of movie()?.images; track $index) {
           <div class="flex-shrink-0 w-60 aspect-video rounded-2xl overflow-hidden snap-start">
-            <img [src]="photo" class="w-full h-full object-cover">
+            <img
+              [src]="photo"
+              [alt]="photo"
+              class="w-full h-full object-cover">
           </div>
         }
       </div>
@@ -99,7 +108,10 @@
       <div class="flex overflow-x-auto gap-3 no-scrollbar snap-x">
         @for (vid of movie()?.videos; track $index) {
           <div class="flex-shrink-0 w-60 aspect-video relative rounded-2xl overflow-hidden snap-start bg-slate-100">
-            <img [src]="'https://img.youtube.com/vi/' + vid.key + '/mqdefault.jpg'" class="w-full h-full object-cover opacity-80">
+            <img
+              [src]="'https://img.youtube.com/vi/' + vid.key + '/mqdefault.jpg'"
+              [alt]="vid.name"
+              class="w-full h-full object-cover opacity-80">
             <ion-icon name="play-circle" class="absolute bottom-2 left-2 text-white text-2xl"></ion-icon>
           </div>
         }

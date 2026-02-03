@@ -2,8 +2,8 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AccountService} from '../../../../core/services/account.service';
-import {AppInputComponent} from '../../../../shared/components/text-input/text-input.component';
+import {AccountService} from '../../../core/services/account.service';
+import {AppInputComponent} from '../../../shared/components/text-input/text-input.component';
 
 @Component({
   selector: 'app-register',

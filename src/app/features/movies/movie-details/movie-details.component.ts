@@ -1,8 +1,8 @@
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
-import {MovieService} from '../../../../core/services/movie.service';
-import {MovieDetails} from '../../../../shared/models/types';
+import {MovieService} from '../../../core/services/movie.service';
+import {MovieDetails} from '../../../shared/models/types';
 
 @Component({
   selector: 'app-movie-details',

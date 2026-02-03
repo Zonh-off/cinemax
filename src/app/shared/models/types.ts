@@ -49,9 +49,8 @@ export type Video = {
 export class MoviesParams {
   pageNumber: number = 1;
   pageSize: number = 6;
-  search: string = '';
-  sort: string = 'popularity';
-  genres: string = '';
+  cityId: number | undefined;
+  status: string = 'active';
 }
 
 export type Genre = {
@@ -62,4 +61,19 @@ export type Genre = {
 export type User = {
   fullName: string;
   email: string;
+}
+
+export type City = {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+export type Cinema = {
+  id: number;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
 }

@@ -13,20 +13,15 @@ export class MovieService {
   getMovies(moviesParams: MoviesParams) {
     let params = new HttpParams();
 
-    if (moviesParams.search && moviesParams.search.length > 0) {
-      params = params.append('search', moviesParams.search);
-    }
-
-    if (moviesParams.sort && moviesParams.sort.length > 0) {
-      params = params.append('sort', moviesParams.sort);
-    }
-
-    if (moviesParams.genres && moviesParams.genres.length > 0) {
-      params = params.append('genres', moviesParams.genres);
-    }
-
     params = params.append("pageSize", moviesParams.pageSize)
     params = params.append("pageNumber", moviesParams.pageNumber)
+
+    if(moviesParams.cityId) {
+      params = params.append("cityId", moviesParams.cityId);
+    }
+    if(moviesParams.status.length > 0) {
+      params = params.append("status", moviesParams.status)
+    }
 
     return this.http.get<Pagination<Movie>>('movies', { params });
   }

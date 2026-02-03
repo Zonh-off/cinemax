@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {AccountService} from '../../../core/services/account.service';
+import {AccountService} from '../../core/services/account.service';
 import {IonicModule} from '@ionic/angular';
 import {Router} from '@angular/router';
 

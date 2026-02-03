@@ -1,11 +1,11 @@
 
 <ion-content>
-  <div class="flex flex-row justify-between p-4">
+  <div class="flex flex-row justify-between p-4" (click)="openCityModal()">
     <div class="flex flex-row items-center gap-2">
       <img src="https://placehold.co/64x64" alt="avatar" class="rounded-[99px]">
       <div class="flex flex-col">
         <span>Your location</span>
-        <span>Lviv</span>
+        <span>{{ cityService.selectedCity()?.name || 'Loading...' }}</span>
       </div>
     </div>
 
@@ -18,10 +18,10 @@
     <section>
       <div class="flex flex-row items-center justify-between">
         <h2 class="text-2xl font-bold">Now Playing</h2>
-        <ion-button fill="clear" routerDirection="forward" [routerLink]="['/tabs/explore']" [queryParams]="{ sort: 'popularity' }">
+        <ion-button fill="clear" routerDirection="forward" [routerLink]="['/movies/now-playing']">
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
           <div class="flex flex-row items-center gap-1">
             View All
-            <ion-icon name="chevron-forward-outline"></ion-icon>
           </div>
         </ion-button>
       </div>
@@ -41,7 +41,7 @@
     <section>
       <div class="flex flex-row items-center justify-between">
         <h2 class="text-2xl font-bold">Coming Soon</h2>
-        <ion-button fill="clear" routerLink="/tabs/movies">
+        <ion-button fill="clear" [routerLink]="['/movies/coming-soon']">
           <div class="flex flex-row items-center gap-1">
             View All
             <ion-icon name="chevron-forward-outline"></ion-icon>
@@ -53,8 +53,7 @@
         @for (movie of movies()?.data; track movie.id) {
           <div class="min-w-[160px] w-[45%] snap-start">
             <app-movie-item
-              [movie]="movie"
-              (click)="handleBooking(movie.id)">
+              [movie]="movie">
             </app-movie-item>
           </div>
         }

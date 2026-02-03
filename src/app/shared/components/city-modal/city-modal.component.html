@@ -1,0 +1,21 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Select City</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="full">
+    @for (city of cityService.cities; track city.id) {
+      <ion-item button (click)="selectCity(city)">
+        <ion-label class="font-medium">{{ city.name }}</ion-label>
+        @if (cityService.selectedCity()?.id === city.id) {
+          <ion-icon name="checkmark-circle" slot="end" color="success"></ion-icon>
+        }
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>

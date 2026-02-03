@@ -1,4 +1,4 @@
-import {Component, input, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {Movie} from '../../models/types';
 import {RouterLink} from '@angular/router';
@@ -15,5 +15,4 @@ import {RouterLink} from '@angular/router';
 })
 export class MovieItemComponent {
   movie = input.required<Movie>()
-  @Input() isWishlisted: boolean = false;
 }

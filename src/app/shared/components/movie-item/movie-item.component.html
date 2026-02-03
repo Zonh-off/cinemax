@@ -1,4 +1,4 @@
-<div class="relative group transition-transform duration-300 active:scale-95" [routerLink]="['/tabs/explore/movie-details', movie().id]">
+<div class="relative group transition-transform duration-300 active:scale-95" [routerLink]="['/movies/movie-details', movie().id]">
   <div class="aspect-[2/3] overflow-hidden rounded-lg ">
     <img
       [src]="movie().posterPath"
@@ -10,7 +10,6 @@
       fill="clear"
       class="absolute top-0 left-0"
     >
-      <ion-icon [name]="isWishlisted ? 'heart' : 'heart-outline'"></ion-icon>
     </ion-button>
 
     <span class="absolute top-4 right-4 bg-yellow-500 text-black text-sm font-bold px-2 py-0.5 rounded-lg uppercase tracking-wider">
