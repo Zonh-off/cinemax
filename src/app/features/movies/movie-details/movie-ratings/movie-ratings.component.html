@@ -1,0 +1,32 @@
+<app-section-header title="Ratings"></app-section-header>
+<div class="flex items-end justify-between gap-6">
+
+  <div class="flex flex-col items-center">
+    <div class="flex items-baseline gap-1">
+          <span class="text-5xl font-bold text-slate-900 leading-none">
+            {{ movie().voteAverage }}
+          </span>
+    </div>
+
+    <app-star-rating [rating]="movie().voteAverage"></app-star-rating>
+
+    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+      {{ movie().voteCount }} ratings
+    </p>
+  </div>
+
+  <div class="flex flex-1 items-end justify-between h-32 gap-1.5">
+    @for (score of [1,2,3,4,5,6,7,8,9,10]; track score) {
+      <div class="flex flex-col items-center flex-1 h-full">
+        <div class="relative w-1.5 h-full bg-slate-200 overflow-hidden flex flex-col justify-end">
+          <div
+            class="w-full bg-yellow-400 rounded-full transition-all duration-1000"
+            [style.height.%]="getVoteHeight(score)">
+          </div>
+        </div>
+        <span class="text-[10px] font-bold text-slate-400 mt-2">{{ score }}</span>
+      </div>
+    }
+  </div>
+
+</div>

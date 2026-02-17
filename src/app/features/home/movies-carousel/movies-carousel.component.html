@@ -1,0 +1,18 @@
+<app-horizontal-section [title]="title()" [routerUrl]="routerUrl()">
+  @if (movies().length > 0) {
+    @for (movie of movies(); track movie.id) {
+      <div class="min-w-[160px] w-[45%] snap-start">
+        <app-movie-item
+          [movie]="movie"
+          [routerLink]="['/movies', movie.id]">
+        </app-movie-item>
+      </div>
+    }
+  } @else {
+    <div class="flex flex-row gap-4 pb-4">
+      <span>No content</span>
+    </div>
+  }
+</app-horizontal-section>
+
+

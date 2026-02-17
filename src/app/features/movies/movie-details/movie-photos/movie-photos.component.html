@@ -1,0 +1,10 @@
+<app-horizontal-section title="Photos">
+  @for (photo of movie().images; track $index) {
+    <div class="flex-shrink-0 w-60 aspect-video rounded-2xl overflow-hidden snap-start">
+      <img
+        [src]="photo"
+        [alt]="photo"
+        class="w-full h-full object-cover">
+    </div>
+  }
+</app-horizontal-section>

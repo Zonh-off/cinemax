@@ -1,5 +1,5 @@
 import {ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners} from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {provideRouter, withComponentInputBinding} from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideIonicAngular } from '@ionic/angular/standalone';
@@ -12,7 +12,7 @@ import {lastValueFrom} from 'rxjs';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideIonicAngular({}),
+    provideRouter(routes, withComponentInputBinding()), provideIonicAngular({}),
     provideHttpClient(withInterceptors([apiInterceptor, authInterceptor])),
     provideAppInitializer(async () => {
       const initService = inject(InitService)

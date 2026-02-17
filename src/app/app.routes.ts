@@ -20,21 +20,27 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent)
   },
   {
-    path: 'movies/now-playing',
-    loadComponent: () => import('./features/movies/now-playing/now-playing.component').then(m => m.NowPlayingComponent),
-  },
-  {
     path: 'movies/coming-soon',
-    loadComponent: () => import('./features/movies/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent),
+    loadComponent: () => import('./features/movies/movie-list-modal/movie-list-modal.component').then(m => m.MovieListModalComponent),
+    data: { title: 'Coming Soon', status: 'coming-soon' }
   },
   {
-    path: 'movies/movie-details/:id',
+    path: 'movies/now-playing',
+    loadComponent: () => import('./features/movies/movie-list-modal/movie-list-modal.component').then(m => m.MovieListModalComponent),
+    data: { title: 'Now Playing', status: 'now-playing' }
+  },
+  {
+    path: 'movies/:id',
     loadComponent: () => import('./features/movies/movie-details/movie-details.component').then(m => m.MovieDetailsComponent)
+  },
+  {
+    path: 'cinemas/:id',
+    loadComponent: () => import('./features/cinemas/cinema-details/cinema-details.component').then(m => m.CinemaDetailsComponent)
   },
   {
     path: 'tabs',
     component: TabsComponent,
-    canActivateChild: [authGuard],
+    /*canActivateChild: [authGuard],*/
     children: [
       {
         path: 'home',

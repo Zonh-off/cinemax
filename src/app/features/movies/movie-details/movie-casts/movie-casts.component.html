@@ -1,0 +1,12 @@
+<app-horizontal-section title="Cast">
+  @for (actor of movie().actors; track $index) {
+    <div class="flex-shrink-0 w-20 text-center snap-start">
+      <img
+        [src]="actor.profilePath"
+        [alt]="actor.name"
+        class="w-20 h-20 object-cover rounded-full border-2 border-slate-100 mb-2">
+      <p class="text-[0.8rem] font-bold">{{ actor.name }}</p>
+      <p class="text-[0.8rem] text-gray-400">{{ actor.character }}</p>
+    </div>
+  }
+</app-horizontal-section>

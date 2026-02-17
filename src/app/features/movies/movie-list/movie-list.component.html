@@ -1,0 +1,16 @@
+<div class="grid grid-cols-2 gap-4">
+  @for (movie of movies(); track movie.id) {
+    <app-movie-item
+      [movie]="movie"
+      [routerLink]="['/movies/movie-details', movie.id]">
+      <ng-content select="[action-btn]"></ng-content>
+    </app-movie-item>
+  }
+</div>
+
+<ion-infinite-scroll (ionInfinite)="loadMore.emit($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more movies...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>

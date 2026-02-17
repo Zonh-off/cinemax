@@ -1,6 +1,6 @@
 import {Component, input} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
-import {Movie} from '../../models/types';
+import {Showtime} from '../../models/types';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -14,5 +14,5 @@ import {RouterLink} from '@angular/router';
   standalone: true
 })
 export class MovieItemComponent {
-  movie = input.required<Movie>()
+  movie = input.required<Showtime>()
 }

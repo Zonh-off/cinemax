@@ -1,0 +1,7 @@
+<ion-chip
+  [outline]="!isSelected()"
+  [color]="isSelected() ? 'danger' : ''"
+  (click)="select.emit()"
+  [class]="'flex flex-col px-6 py-3 rounded-lg ' + (!isSelected() ? 'border border-slate-200' : '')">
+  <ng-content></ng-content>
+</ion-chip>

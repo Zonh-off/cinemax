@@ -1,0 +1,11 @@
+<app-horizontal-section title="More Videos">
+  @for (vid of movie().videos; track $index) {
+    <div class="flex-shrink-0 w-60 aspect-video relative rounded-2xl overflow-hidden snap-start bg-slate-100">
+      <img
+        [src]="'https://img.youtube.com/vi/' + vid.key + '/mqdefault.jpg'"
+        [alt]="vid.name"
+        class="w-full h-full object-cover opacity-80">
+      <ion-icon name="play-circle" class="absolute bottom-2 left-2 text-white text-2xl"></ion-icon>
+    </div>
+  }
+</app-horizontal-section>

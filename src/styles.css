@@ -2,8 +2,6 @@
 
 @import "tailwindcss";
 
-@import '@ionic/angular/css/palettes/dark.always.css';
-
 :root {
   --ion-color-primary: #fe3420 !important;
 }

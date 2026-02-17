@@ -1,0 +1,71 @@
+<app-base-modal-page-layout [title]="cinema()?.name!" backRouterUrl="/tabs/cinemas">
+  <div class="w-full h-56 bg-gray-100 rounded-lg mb-6 relative overflow-hidden border border-gray-200 shadow-inner">
+    <iframe
+      width="100%"
+      height="100%"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=24.02,49.83,24.04,49.85&layer=mapnik&marker=49.8397,24.0297"
+      >
+    </iframe>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <div class="flex flex-row items-center gap-2">
+        <app-star-rating [rating]="5"></app-star-rating>
+        <span class="text-xs text-gray-400 font-medium">(12,345 Google reviews)</span>
+      </div>
+      <p class="text-gray-600 text-sm leading-relaxed">
+        <ion-icon name="location-outline" class="mr-1 text-primary"></ion-icon>
+        {{ cinema()?.address }}
+      </p>
+    </div>
+
+    <div>
+      <div class="flex flex-row gap-4 overflow-x-auto pb-2 no-scrollbar date-list">
+        @for (day of days; track day.value) {
+          <app-selectable-chip
+            [isSelected]="selectedDate() === day.value"
+            (select)="selectedDate.set(day.value)">
+            <span class="text-xl font-bold">{{ day.dayNumber }}</span>
+            <span class="text-[12px] uppercase tracking-tighter opacity-70">{{ day.label }}</span>
+          </app-selectable-chip>
+        }
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-8">
+      @for (i of [0, 1, 2]; track $index) {
+        <div class="flex flex-col gap-4">
+          <app-movie-attributes [movie]="movie()!"></app-movie-attributes>
+
+          <div>
+            <div class="flex flex-row justify-between">
+              <ion-text role="heading" aria-level="3" class="font-bold text-xl mb-4 px-1">
+                Sessions
+              </ion-text>
+              <ion-text class="text-lg text-slate-400 mb-4 px-1">
+                Hall 1
+              </ion-text>
+            </div>
+
+            <div class="flex flex-wrap gap-3 time-grid">
+              @for (time of sessions; track time) {
+                <app-selectable-chip
+                  [isSelected]="selectedTime() === time"
+                  (select)="selectedTime.set(time)">
+                  <span class="text-lg font-medium">{{ time }}</span>
+                </app-selectable-chip>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="pt-4">
+      <ion-button expand="block" shape="round" color="primary" class="h-14 text-lg font-bold shadow-lg shadow-blue-100">
+        Continue
+      </ion-button>
+    </div>
+  </div>
+</app-base-modal-page-layout>

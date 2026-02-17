@@ -1,0 +1,6 @@
+<app-base-modal-page-layout [title]="title()" backRouterUrl="/tabs/home">
+  <app-movie-list
+    [movies]="showtimes()"
+    (loadMore)="loadMore($event)">
+  </app-movie-list>
+</app-base-modal-page-layout>

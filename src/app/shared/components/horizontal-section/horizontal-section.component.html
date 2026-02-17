@@ -1,0 +1,6 @@
+<section>
+  <app-section-header [title]="title()" [routerUrl]="routerUrl() ?? ''"></app-section-header>
+  <div class="flex flex-row overflow-x-auto gap-4 px-4 pb-4 no-scrollbar scroll-smooth snap-x snap-mandatory">
+    <ng-content></ng-content>
+  </div>
+</section>

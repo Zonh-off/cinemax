@@ -1,13 +1,11 @@
-import {Component, effect, inject, OnInit, signal} from '@angular/core';
-import {IonicModule, ModalController} from '@ionic/angular';
-import {MovieItemComponent} from '../../shared/components/movie-item/movie-item.component';
-import * as allIcons from 'ionicons/icons';
-import { addIcons } from 'ionicons';
-import {Router, RouterLink} from '@angular/router';
-import {Movie, MoviesParams, Pagination} from '../../shared/models/types';
-import {MovieService} from '../../core/services/movie.service';
+import {Component, effect, inject, signal} from '@angular/core';
+import {IonicModule} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {Pagination, Showtime, ShowtimesParams} from '../../shared/models/types';
 import {CityService} from '../../core/services/city.service';
-import {CityModalComponent} from '../../shared/components/city-modal/city-modal.component';
+import {MoviesCarouselComponent} from './movies-carousel/movies-carousel.component';
+import {HomeHeaderComponent} from './home-header/home-header.component';
+import {ShowtimeService} from '../../core/services/showtime.service';
 
 @Component({
   selector: 'app-home',
@@ -15,50 +13,50 @@ import {CityModalComponent} from '../../shared/components/city-modal/city-modal.
   styleUrls: ['./home.component.css'],
   imports: [
     IonicModule,
-    MovieItemComponent,
-    RouterLink,
+    MoviesCarouselComponent,
+    HomeHeaderComponent,
   ],
   standalone: true
 })
-export class HomeComponent implements OnInit {
-  movieService = inject(MovieService);
+export class HomeComponent {
+  showtimeService = inject(ShowtimeService);
   cityService = inject(CityService);
-  movies = signal<Pagination<Movie> | null>(null);
-  moviesParams = signal(new MoviesParams());
+
+  nowMovies = signal<Showtime[]>([]);
+  upcomingMovies = signal<Showtime[]>([]);
+
+  nowMoviesParams = signal(new ShowtimesParams());
+  upcomingMoviesParams = signal(new ShowtimesParams());
+
   router = inject(Router);
-  modalCtrl = inject(ModalController);
 
   constructor() {
-    addIcons(allIcons);
-
     effect(() => {
       const city = this.cityService.selectedCity();
       if (city) {
-        this.moviesParams.update(prev => ({ ...prev, cityId: city.id }));
-        this.getMovies();
+        this.nowMoviesParams.update(prev => ({ ...prev, cityId: city.id }));
+        this.upcomingMoviesParams.update(prev => ({ ...prev, cityId: city.id }));
+        this.getNowPlayingMovies();
+        this.getUpcomingMovies()
       }
     });
   }
 
-  ngOnInit(): void {
-    this.cityService.getCities().subscribe({
-      next: () => this.cityService.getSavedCity()
+  getNowPlayingMovies() {
+    this.showtimeService.getShowtimesPaged(this.nowMoviesParams()).subscribe({
+      next: (data: Pagination<Showtime>) => {
+        this.nowMovies.set(data.data)
+      },
+      error: err => console.log(err)
     });
   }
 
-  async openCityModal() {
-    const modal = await this.modalCtrl.create({
-      component: CityModalComponent,
-      breakpoints: [0, 0.5, 0.8],
-      initialBreakpoint: 0.5
-    });
-    await modal.present();
-  }
-
-  getMovies() {
-    this.movieService.getMovies(this.moviesParams()).subscribe({
+  getUpcomingMovies() {
+    console.log(this.upcomingMoviesParams());
+    this.showtimeService.getShowtimesPaged(this.upcomingMoviesParams()).subscribe({
       next: data => {
-        this.movies.set(data)
+        console.log(data.data)
+        this.upcomingMovies.set(data.data)
       },
       error: err => console.log(err)
     });

@@ -2,11 +2,6 @@ export type Movie = {
   id: number;
   title: string;
   posterPath: string;
-  voteAverage: number;
-  popularity: number;
-  releaseDate: string;
-  genres: string[];
-  status: string;
 }
 
 export type Pagination<T> = {
@@ -46,16 +41,13 @@ export type Video = {
   type: string;
 }
 
-export class MoviesParams {
+export class ShowtimesParams {
   pageNumber: number = 1;
   pageSize: number = 6;
   cityId: number | undefined;
-  status: string = 'active';
-}
-
-export type Genre = {
-  id: number;
-  name: string;
+  cinemaId: number | undefined;
+  from: string | undefined;
+  to: string | undefined;
 }
 
 export type User = {
@@ -76,4 +68,22 @@ export type Cinema = {
   address: string;
   latitude: number;
   longitude: number;
+}
+
+export type Showtime = {
+  id: number;
+  startTime: string;
+  endTime: string;
+  movieId: number;
+  movieTitle: string;
+  posterPath: string;
+  hallId: number;
+  hallName: string;
+  cinemaId: number;
+  cinemaName: string;
+}
+
+export type ShowtimeDay = {
+  date: string;
+  showtimes: Showtime[];
 }

@@ -1,0 +1,12 @@
+<app-section-header title="Trailer"></app-section-header>
+<div class="relative aspect-video rounded-3xl overflow-hidden shadow-lg group">
+  <img
+    [src]="'https://img.youtube.com/vi/' + movie().trailerUrl + '/maxresdefault.jpg'"
+    [alt]="movie().title"
+    class="w-full h-full object-cover">
+  <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-active:bg-black/50 transition-all">
+    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl">
+      <ion-icon name="play" class="text-black text-3xl ml-1"></ion-icon>
+    </div>
+  </div>
+</div>
