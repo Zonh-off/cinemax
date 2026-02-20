@@ -1,0 +1,12 @@
+[
+  { "name": "Cinema Kyiv 1", "address": "Main Street 1", "latitude": 50.45, "longitude": 30.52, "cityId": 1 },
+  { "name": "Cinema Kyiv 2", "address": "Central Ave 10", "latitude": 50.46, "longitude": 30.53, "cityId": 1 },
+  { "name": "Lviv Cinema Center", "address": "Freedom St 5", "latitude": 49.84, "longitude": 24.03, "cityId": 2 },
+  { "name": "Odessa Grand Cinema", "address": "Sea Road 12", "latitude": 46.48, "longitude": 30.72, "cityId": 3 },
+  { "name": "Kharkiv Movies", "address": "Industrial 8", "latitude": 49.99, "longitude": 36.23, "cityId": 4 },
+  { "name": "Dnipro Film Hub", "address": "River St 22", "latitude": 48.46, "longitude": 35.04, "cityId": 5 },
+  { "name": "Warsaw Cineplex", "address": "Center 100", "latitude": 52.22, "longitude": 21.01, "cityId": 6 },
+  { "name": "Prague Cinema City", "address": "Old Town 15", "latitude": 50.07, "longitude": 14.43, "cityId": 7 },
+  { "name": "Berlin MegaCinema", "address": "Alexanderplatz 3", "latitude": 52.52, "longitude": 13.40, "cityId": 8 },
+  { "name": "Vienna CineWorld", "address": "Ringstrasse 9", "latitude": 48.20, "longitude": 16.37, "cityId": 9 }
+]

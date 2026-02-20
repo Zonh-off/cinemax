@@ -1,0 +1,4 @@
+﻿[
+    { "name": "Standard", "weight": 1.0 },
+    { "name": "VIP", "weight": 1.5 }
+]
