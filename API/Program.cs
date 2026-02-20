@@ -1,11 +1,15 @@
 using API.Helpers;
+using API.Hubs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Services.Orders;
 using Infrastucture.Data;
 using Infrastucture.Services.CacheService;
 using Infrastucture.Services.EmailService;
+using Infrastucture.Services.SeatHoldService;
 using Infrastucture.Services.TheMovieDatabase;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -68,6 +72,10 @@ builder.Services.AddIdentityApiEndpoints<AppUser>()
    .AddEntityFrameworkStores<StoreContext>();
 builder.Services
    .AddFluentEmail("info@cinemax.com", "Cinemax");
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ISeatHoldService, SeatHoldService>();
+builder.Services.AddSingleton<IShowtimeNotifier, ShowtimeNotifier>(); 
+builder.Services.AddSignalR();
 
 var mailSettings = builder.Configuration.GetSection("MailSettings");
 builder.Services
@@ -98,6 +106,7 @@ app.UseAuthorization();
 
 app.MapGroup("api/account").MapIdentityApi<AppUser>();
 app.MapControllers();
+app.MapHub<ShowtimeHub>("/hubs/showtime");
 
 try
 {
@@ -105,9 +114,10 @@ try
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<StoreContext>();
     var tmdbService = services.GetRequiredService<TmdbService>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     //await context.Database.EnsureDeletedAsync();
     await context.Database.MigrateAsync();
-    await StoreContextSeed.SeedAsync(context, tmdbService);
+    await StoreContextSeed.SeedAsync(context, tmdbService, userManager);
 }
 catch (Exception e)
 {

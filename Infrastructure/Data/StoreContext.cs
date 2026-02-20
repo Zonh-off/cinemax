@@ -14,7 +14,10 @@ public class StoreContext(DbContextOptions<StoreContext> options) : IdentityDbCo
     public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<Showtime> Showtimes => Set<Showtime>();
     public DbSet<ShowtimeSeatPrice> ShowtimeSeatPrices => Set<ShowtimeSeatPrice>();
-    
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderTicket> OrderTickets => Set<OrderTicket>();
+    public DbSet<OrderReservedSeat> OrderReservedSeats => Set<OrderReservedSeat>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -121,6 +124,8 @@ public class StoreContext(DbContextOptions<StoreContext> options) : IdentityDbCo
         
         modelBuilder.Entity<Order>(b =>
         {
+            b.ToTable("Orders");
+
             b.HasOne(x => x.User)
                .WithMany()
                .HasForeignKey(x => x.UserId)
@@ -136,31 +141,61 @@ public class StoreContext(DbContextOptions<StoreContext> options) : IdentityDbCo
 
         modelBuilder.Entity<OrderTicket>(b =>
         {
+            b.ToTable("OrderTickets");
+
             b.HasOne(x => x.Order)
-               .WithMany(x => x.Tickets)
+               .WithMany(o => o.Tickets)
                .HasForeignKey(x => x.OrderId)
                .OnDelete(DeleteBehavior.Cascade);
 
             b.HasOne(x => x.Showtime)
                .WithMany()
                .HasForeignKey(x => x.ShowtimeId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
             b.HasOne(x => x.Seat)
                .WithMany()
                .HasForeignKey(x => x.SeatId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
             b.HasOne(x => x.SeatType)
                .WithMany()
                .HasForeignKey(x => x.SeatTypeId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
             b.Property(x => x.UnitPrice).HasColumnType("decimal(18,2)");
 
             b.HasIndex(x => new { x.ShowtimeId, x.SeatId }).IsUnique();
-
             b.HasIndex(x => x.TicketCode).IsUnique();
+        });
+        
+        modelBuilder.Entity<OrderReservedSeat>(b =>
+        {
+            b.ToTable("OrderReservedSeats");
+
+            b.HasOne(x => x.Order)
+               .WithMany(o => o.ReservedSeats)
+               .HasForeignKey(x => x.OrderId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(x => x.Showtime)
+               .WithMany()
+               .HasForeignKey(x => x.ShowtimeId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            b.HasOne(x => x.Seat)
+               .WithMany()
+               .HasForeignKey(x => x.SeatId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            b.HasOne(x => x.SeatType)
+               .WithMany()
+               .HasForeignKey(x => x.SeatTypeId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            b.Property(x => x.UnitPrice).HasColumnType("decimal(18,2)");
+
+            b.HasIndex(x => new { x.OrderId, x.SeatId }).IsUnique();
         });
     }
 }

@@ -11,8 +11,8 @@ namespace API.Controllers;
 
 public class PreRegistrationCache
 {
-    public string Password { get; set; }
-    public string Code { get; set; }
+    public required string Password { get; set; }
+    public required string Code { get; set; }
 }
 
 public class AccountController(SignInManager<AppUser> signInManager, 
