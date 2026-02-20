@@ -57,4 +57,28 @@ public class ShowtimesController(IUnitOfWork unit, IMapper mapper) : BaseApiCont
 
         return result;
     }
+    
+    [HttpGet("/api/showtimes/{showtimeId:int}/seats")]
+    public async Task<ActionResult> GetSeatsForShowtime(int showtimeId)
+    {
+        var spec = new ShowtimeWithSeatsSpec(showtimeId);
+
+        var showtime = await unit.Repository<Showtime>().GetEntityWithSpec(spec);
+        if (showtime == null) return NotFound();
+
+        var data = new
+        {
+            ShowtimeId = showtime.Id,
+            HallId = showtime.HallId,
+            Seats = showtime.Hall.Seats.Select(seat => new
+            {
+                seat.Id,
+                seat.Row,
+                seat.Number,
+                seat.SeatTypeId
+            }).ToList()
+        };
+
+        return Ok(data);
+    }
 }

@@ -2,5 +2,5 @@
 
 public class TmdbGenresResponse
 {
-    public List<TmdbGenre> Genres { get; set; }
+    public List<TmdbGenre> Genres { get; set; } = new List<TmdbGenre>();
 }

@@ -2,6 +2,7 @@
 using Core.Entities;
 using Infrastucture.Data;
 using Infrastucture.Services.TheMovieDatabase;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
@@ -13,8 +14,27 @@ public class StoreContextSeed
         PropertyNameCaseInsensitive = true
     };
 
-    public static async Task SeedAsync(StoreContext context, TmdbService tmdbService)
+    public static async Task SeedAsync(StoreContext context, 
+                                       TmdbService tmdbService,
+                                       UserManager<AppUser> userManager)
     {
+        if (!userManager.Users.Any())
+        {
+            var testUser = new AppUser
+            {
+                UserName = "test@test.com",
+                Email = "testr@test.com",
+                FullName = "Test User",
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(testUser, "Pa$$w0rd");
+
+            if (!result.Succeeded)
+                throw new Exception("Failed to create test user: " +
+                                    string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+        
         if (!await context.Cities.AnyAsync())
         {
             var citiesData = await File.ReadAllTextAsync("../Infrastructure/Data/SeedData/cities.json");

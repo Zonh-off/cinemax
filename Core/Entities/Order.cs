@@ -24,25 +24,7 @@ public class Order : BaseEntity
     public string? PaymentStatus { get; set; } 
 
     public ICollection<OrderTicket> Tickets { get; set; } = new List<OrderTicket>();
-}
-
-public class OrderTicket : BaseEntity
-{
-    public required int OrderId { get; set; }
-    public Order Order { get; set; } = null!;
-
-    public required int ShowtimeId { get; set; }
-    public Showtime Showtime { get; set; } = null!;
-
-    public required int SeatId { get; set; }
-    public Seat Seat { get; set; } = null!;
-
-    public required int SeatTypeId { get; set; }
-    public SeatType SeatType { get; set; } = null!;
-
-    public decimal UnitPrice { get; set; }
-
-    public string TicketCode { get; set; } = Guid.NewGuid().ToString("N");
+    public ICollection<OrderReservedSeat> ReservedSeats { get; set; } = new List<OrderReservedSeat>();
 }
 
 public enum OrderStatus
