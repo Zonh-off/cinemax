@@ -1,11 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Core.Interfaces;
 
-public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecification<T>
+public class BaseSpecification<T> : ISpecification<T>
 {
-    protected BaseSpecification() : this(null) {}
-    
-    public Expression<Func<T, bool>>? Criteria => criteria;
+    public Expression<Func<T, bool>>? Criteria { get; private set; }
     public Expression<Func<T, object>>? OrderBy { get; private set; }
     public Expression<Func<T, object>>? OrderByDescending { get; private set; }
     public List<Expression<Func<T, object>>> Includes { get; private set; } = [];
@@ -15,6 +13,13 @@ public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecif
     public int Skip { get; private set; }
     public bool IsPagingEnabled { get; private set; }
     
+    public BaseSpecification(Expression<Func<T, bool>>? criteria)
+    {
+        Criteria = criteria;
+    }
+    
+    protected BaseSpecification() : this(null) {}
+    
     public IQueryable<T> ApplyCriteria(IQueryable<T> query)
     {
         if (Criteria != null)
@@ -23,6 +28,26 @@ public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecif
         }
         
         return query;
+    }
+
+    protected void AddCriteria(Expression<Func<T, bool>> newCriteria)
+    {
+        if (Criteria == null)
+        {
+            Criteria = newCriteria;
+        }
+        else
+        {
+            var parameter = Expression.Parameter(typeof(T));
+
+            var leftVisitor = new ReplaceExpressionVisitor(Criteria.Parameters[0], parameter);
+            var left = leftVisitor.Visit(Criteria.Body);
+
+            var rightVisitor = new ReplaceExpressionVisitor(newCriteria.Parameters[0], parameter);
+            var right = rightVisitor.Visit(newCriteria.Body);
+
+            Criteria = Expression.Lambda<Func<T, bool>>(Expression.AndAlso(left, right), parameter);
+        }
     }
 
     protected void AddInclude(Expression<Func<T, object>> includeExpression)
@@ -67,5 +92,14 @@ public class BaseSpecification<T, TResult>(Expression<Func<T, bool>>? criteria) 
     protected void AddSelect(Expression<Func<T, TResult>> selectExpression)
     {
         Select = selectExpression;
+    }
+}
+
+public class ReplaceExpressionVisitor(ParameterExpression oldParameter, Expression newExpression) 
+    : ExpressionVisitor
+{
+    protected override Expression VisitParameter(ParameterExpression node)
+    {
+        return node == oldParameter ? newExpression : base.VisitParameter(node)!;
     }
 }

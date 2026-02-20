@@ -58,7 +58,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
 builder.Services.AddSingleton<ICacheService, RedisService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(typeof(MappingProfiles));
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddHttpClient<TmdbService>(client => 
 {
     client.BaseAddress = new Uri("https://api.themoviedb.org/3/");

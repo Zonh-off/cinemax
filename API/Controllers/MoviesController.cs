@@ -1,5 +1,4 @@
 ﻿using API.DTOs;
-using API.Extentions;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -11,18 +10,6 @@ namespace API.Controllers;
 
 public class MoviesController(IUnitOfWork unit, TmdbService tmdbService, IMapper mapper) : BaseApiController
 {
-    [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<MoviesResponse>>> GetAllMovies([FromQuery] MovieSpecParams specParams)
-    {
-        var specification = new MovieSpecification(specParams);
-        
-        return Ok(await CreatePagedResult(unit.Repository<Movie>(),
-                                          specification,
-                                          specParams.PageNumber,
-                                          specParams.PageSize, 
-                                          mapper.Map<MoviesResponse>));
-    }
-    
     [HttpGet("{id:int}")]
     public async Task<ActionResult<MovieDetailsResponse>> GetMovie(int id)
     {
@@ -39,13 +26,5 @@ public class MoviesController(IUnitOfWork unit, TmdbService tmdbService, IMapper
         mapper.Map(extraDetails, result);
 
         return Ok(result);
-    }
-    
-    [HttpGet("genres")]
-    public async Task<IReadOnlyList<GenreResponse>> GetGenresAsync()
-    {
-        var result = await tmdbService.GetGenresAsync();
-
-        return mapper.Map<IReadOnlyList<GenreResponse>>(result.Genres);
     }
 }

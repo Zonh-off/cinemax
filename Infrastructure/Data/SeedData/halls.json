@@ -1,0 +1,12 @@
+[
+    { "name": "Hall 1", "cinemaId": 1 },
+    { "name": "Hall 2", "cinemaId": 1 },
+    { "name": "Hall 1", "cinemaId": 2 },
+    { "name": "Hall 1", "cinemaId": 3 },
+    { "name": "Hall 1", "cinemaId": 4 },
+    { "name": "Hall 1", "cinemaId": 5 },
+    { "name": "Hall 1", "cinemaId": 6 },
+    { "name": "Hall 1", "cinemaId": 7 },
+    { "name": "Hall 1", "cinemaId": 8 },
+    { "name": "Hall 1", "cinemaId": 9 }
+]

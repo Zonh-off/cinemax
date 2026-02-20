@@ -1,0 +1,12 @@
+﻿[
+    { "showtimeId": 1, "seatTypeId": 1, "price": 200.00 },
+    { "showtimeId": 1, "seatTypeId": 2, "price": 300.00 },
+    { "showtimeId": 2, "seatTypeId": 1, "price": 220.00 },
+    { "showtimeId": 2, "seatTypeId": 2, "price": 320.00 },
+    { "showtimeId": 3, "seatTypeId": 1, "price": 180.00 },
+    { "showtimeId": 3, "seatTypeId": 2, "price": 280.00 },
+    { "showtimeId": 4, "seatTypeId": 1, "price": 210.00 },
+    { "showtimeId": 5, "seatTypeId": 1, "price": 230.00 },
+    { "showtimeId": 6, "seatTypeId": 1, "price": 190.00 },
+    { "showtimeId": 6, "seatTypeId": 2, "price": 290.00 }
+]
