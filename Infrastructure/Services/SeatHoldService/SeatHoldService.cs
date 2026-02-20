@@ -35,15 +35,27 @@ public class SeatHoldService : ISeatHoldService
         return ok ? (true, null) : (false, "Seat already held");
     }
 
-    public async Task ReleaseSeatAsync(int showtimeId, int seatId, string userId)
+    public async Task<(bool ok, int? failedSeatId, string? reason)> HoldSeatsAsync(
+        int showtimeId, IReadOnlyList<int> seatIds, string userId, TimeSpan ttl)
     {
-        var key = Key(showtimeId, seatId);
+        var unique = seatIds.Distinct().ToList();
+        var heldNow = new List<int>();
 
-        var existingUser = await _cache.GetCacheAsync<string>(key);
-        if (existingUser == null) return;
+        foreach (var seatId in unique)
+        {
+            var (ok, reason) = await HoldSeatAsync(showtimeId, seatId, userId, ttl);
+            if (!ok)
+            {
+                foreach (var s in heldNow)
+                    await ReleaseSeatAsync(showtimeId, s, userId);
 
-        if (existingUser == userId)
-            await _cache.RemoveCacheAsync(key);
+                return (false, seatId, reason ?? "Seat already held");
+            }
+
+            heldNow.Add(seatId);
+        }
+
+        return (true, null, null);
     }
 
     public async Task<bool> IsHeldByUserAsync(int showtimeId, int seatId, string userId)
@@ -82,5 +94,56 @@ public class SeatHoldService : ISeatHoldService
             if (existingUser == userId)
                 await _cache.RemoveCacheAsync(key);
         }
+    }
+    
+     public Task<string?> GetSeatHolderAsync(int showtimeId, int seatId)
+        => _cache.GetCacheAsync<string>(Key(showtimeId, seatId));
+
+    public async Task<IReadOnlyList<int>> RefreshHoldsAsync(
+        int showtimeId, IReadOnlyList<int> seatIds, string userId, TimeSpan ttl)
+    {
+        var okSeats = new List<int>();
+        foreach (var seatId in seatIds.Distinct())
+        {
+            var holder = await GetSeatHolderAsync(showtimeId, seatId);
+            if (holder == userId)
+            {
+                await _cache.RefreshExpirationAsync(Key(showtimeId, seatId), ttl);
+                okSeats.Add(seatId);
+            }
+        }
+        return okSeats;
+    }
+
+    public async Task ReleaseSeatAsync(int showtimeId, int seatId, string userId)
+    {
+        var key = Key(showtimeId, seatId);
+
+        var existingUser = await _cache.GetCacheAsync<string>(key);
+        if (existingUser == null) return;
+
+        if (existingUser == userId)
+            await _cache.RemoveCacheAsync(key);
+    }
+    
+    public async Task<IReadOnlyList<int>> ReleaseAllUserHoldsAsync(int showtimeId, string userId)
+    {
+        var keys = await _cache.FindKeysAsync(Pattern(showtimeId));
+        var released = new List<int>();
+
+        foreach (var key in keys)
+        {
+            var existingUser = await _cache.GetCacheAsync<string>(key);
+            if (existingUser != userId) continue;
+
+            // key: hold:{showtimeId}:{seatId}
+            var parts = key.Split(':');
+            if (parts.Length == 3 && int.TryParse(parts[2], out var seatId))
+                released.Add(seatId);
+
+            await _cache.RemoveCacheAsync(key);
+        }
+
+        return released;
     }
 }
