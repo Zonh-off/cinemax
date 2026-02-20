@@ -1,15 +1,31 @@
 ﻿using System.Security.Claims;
 using API.DTOs;
+using AutoMapper;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Models;
+using Core.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [Authorize]
-public class OrdersController(IOrderService orders, ISeatHoldService holds) : BaseApiController
+public class OrdersController(IOrderService orders, ISeatHoldService holds, IMapper mapper, IUnitOfWork unit) : BaseApiController
 {
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<OrderListItemResponse>>> GetMyOrders()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        var spec = new OrdersForUserSpec(userId);
+
+        var orders = await unit.Repository<Order>().GetAllEntityWithSpec(spec);
+
+        var result = mapper.Map<List<OrderListItemResponse>>(orders);
+        return Ok(result);
+    }
+    
     [HttpPost("{showtimeId:int}/hold")]
     public async Task<ActionResult> HoldSeat(int showtimeId, [FromBody] SeatHoldRequest dto)
     {
