@@ -16,9 +16,3 @@ public class ShowtimeRowResponse
     public string MovieTitle { get; set; } = "";
     public string PosterPath { get; set; } = "";
 }
-
-public class ShowtimesDayResponse
-{
-    public DateOnly Date { get; set; }
-    public List<ShowtimeRowResponse> Showtimes { get; set; } = new();
-}

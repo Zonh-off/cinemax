@@ -1,5 +1,6 @@
 using API.Helpers;
 using API.Hubs;
+using API.Middlewares;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -90,6 +91,8 @@ builder.Services
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().AllowCredentials()
                .WithOrigins("http://localhost:8100", "https://localhost:8100"));

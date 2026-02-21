@@ -7,6 +7,7 @@ using Core.Models;
 using Core.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers;
 
@@ -24,6 +25,19 @@ public class OrdersController(IOrderService orders, ISeatHoldService holds, IMap
 
         var result = mapper.Map<List<OrderListItemResponse>>(orders);
         return Ok(result);
+    }
+    
+    [HttpGet("{orderId:int}/tickets")]
+    public async Task<ActionResult<IReadOnlyList<TicketResponse>>> GetOrderTickets(int orderId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        var spec = new TicketsForUserOrderSpec(orderId, userId);
+        var tickets = await unit.Repository<OrderTicket>().GetAllEntityWithSpec(spec);
+        
+        if (tickets.IsNullOrEmpty()) return NotFound();
+
+        return Ok(mapper.Map<List<TicketResponse>>(tickets));
     }
     
     [HttpPost("{showtimeId:int}/hold")]
