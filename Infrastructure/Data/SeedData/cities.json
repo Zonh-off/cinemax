@@ -1,0 +1,12 @@
+[
+  { "name": "Kyiv", "latitude": 50.4501, "longitude": 30.5234 },
+  { "name": "Lviv", "latitude": 49.8397, "longitude": 24.0297 },
+  { "name": "Odessa", "latitude": 46.4825, "longitude": 30.7233 },
+  { "name": "Kharkiv", "latitude": 49.9935, "longitude": 36.2304 },
+  { "name": "Dnipro", "latitude": 48.4647, "longitude": 35.0462 },
+  { "name": "Warsaw", "latitude": 52.2297, "longitude": 21.0122 },
+  { "name": "Prague", "latitude": 50.0755, "longitude": 14.4378 },
+  { "name": "Berlin", "latitude": 52.5200, "longitude": 13.4050 },
+  { "name": "Vienna", "latitude": 48.2082, "longitude": 16.3738 },
+  { "name": "Budapest", "latitude": 47.4979, "longitude": 19.0402 }
+]

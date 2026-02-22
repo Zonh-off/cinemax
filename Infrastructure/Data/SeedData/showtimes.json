@@ -1,0 +1,12 @@
+[
+    { "startTime": "2026-02-20T10:00:00", "endTime": "2026-02-15T12:00:00", "movieId": 1, "hallId": 1 },
+    { "startTime": "2026-02-20T13:00:00", "endTime": "2026-02-15T15:00:00", "movieId": 2, "hallId": 1 },
+    { "startTime": "2026-02-20T18:00:00", "endTime": "2026-02-15T20:00:00", "movieId": 3, "hallId": 2 },
+    { "startTime": "2026-02-21T10:30:00", "endTime": "2026-02-16T12:30:00", "movieId": 1, "hallId": 3 },
+    { "startTime": "2026-02-21T14:00:00", "endTime": "2026-02-16T16:00:00", "movieId": 4, "hallId": 4 },
+    { "startTime": "2026-02-21T19:00:00", "endTime": "2026-02-16T21:00:00", "movieId": 5, "hallId": 5 },
+    { "startTime": "2026-02-22T11:00:00", "endTime": "2026-02-17T13:00:00", "movieId": 2, "hallId": 6 },
+    { "startTime": "2026-02-22T15:00:00", "endTime": "2026-02-17T17:00:00", "movieId": 3, "hallId": 7 },
+    { "startTime": "2026-02-23T18:30:00", "endTime": "2026-02-17T20:30:00", "movieId": 4, "hallId": 8 },
+    { "startTime": "2026-02-23T20:00:00", "endTime": "2026-02-18T22:00:00", "movieId": 5, "hallId": 9 }
+]
